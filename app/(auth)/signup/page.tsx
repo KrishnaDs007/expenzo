@@ -5,8 +5,8 @@ import AuthBrandingPanel from "@/components/auth/AuthBrandingPanel";
 import GoogleOAuthButton from "@/components/auth/GoogleOAuthButton";
 import AuthForm from "@/components/auth/AuthForm";
 
-export default function LoginPage() {
-  const [mode, setMode] = useState<"login" | "signup">("login");
+export default function SignupPage() {
+  const [mode, setMode] = useState<"login" | "signup">("signup");
 
   return (
     <div className="flex min-h-screen">
@@ -25,12 +25,12 @@ export default function LoginPage() {
 
           <div className="text-center lg:text-left">
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-              {mode === "login" ? "Welcome back" : "Create your account"}
+              {mode === "signup" ? "Create your account" : "Welcome back"}
             </h1>
             <p className="mt-2 text-muted-foreground">
-              {mode === "login"
-                ? "Sign in to continue tracking your expenses"
-                : "Start tracking expenses with AI in seconds"}
+              {mode === "signup"
+                ? "Start tracking expenses with AI in seconds"
+                : "Sign in to continue tracking your expenses"}
             </p>
           </div>
 
@@ -38,7 +38,7 @@ export default function LoginPage() {
 
           <AuthForm
             mode={mode}
-            onToggleMode={() => setMode(mode === "login" ? "signup" : "login")}
+            onToggleMode={() => setMode(mode === "signup" ? "login" : "signup")}
           />
         </div>
       </div>
