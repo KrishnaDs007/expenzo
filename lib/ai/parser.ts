@@ -1,7 +1,8 @@
-// AI expense parser — Anthropic Haiku / Gemini Flash integration
-// See expenzo-developer-guide.md Section 8 for full implementation
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export const SYSTEM_PROMPT = `You are an expense parser. Extract structured data from natural language expense descriptions.
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
+
+const SYSTEM_PROMPT = `You are an expense parser. Extract structured data from natural language expense descriptions.
 Always respond with valid JSON only. No explanation, no markdown.
 
 JSON schema:
@@ -14,6 +15,8 @@ JSON schema:
   "paidBy": "me",
   "splitWith": string[],
   "splitType": "none" | "equal" | "custom",
+  "isRecurring": boolean,
+  "recurringInterval": "monthly" | "weekly" | "yearly" | "none",
   "confidence": number
 }
 
@@ -25,9 +28,35 @@ Rules:
 - confidence: 0–1 based on how clear the input was
 - Today's date: ${new Date().toISOString().split('T')[0]}`;
 
-export async function parseExpense(text: string) {
-  // TODO: Implement AI model call
-  // See developer guide for Anthropic / Gemini integration
-  console.log('Parsing:', text);
-  return null;
+export async function parseExpenseWithGemini(input: string) {
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    systemInstruction: SYSTEM_PROMPT,
+  });
+
+  try {
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: input }],
+        },
+      ],
+      generationConfig: {
+        temperature: 0.1,
+        responseMimeType: "application/json",
+      },
+    });
+
+    const responseText = result.response.text();
+    console.log("Raw Gemini Output:", responseText);
+
+    // Clean up potential markdown blocks if the model somehow includes them despite instructions
+    const cleanedText = responseText.replace(/```json/g, "").replace(/```/g, "").trim();
+    
+    return JSON.parse(cleanedText);
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    throw new Error("Failed to parse expense");
+  }
 }

@@ -43,6 +43,8 @@ export const expenses = pgTable('expenses', {
   paymentMethod: paymentMethodEnum('payment_method').notNull(),
   rawInput: text('raw_input'),
   aiParsed: text('ai_parsed'),
+  isRecurring: text('is_recurring').default('false'),
+  recurringInterval: text('recurring_interval'), // e.g., 'monthly', 'weekly', 'yearly'
   createdAt: timestamp('created_at').defaultNow(),
 });
 

@@ -45,7 +45,7 @@ export default async function DashboardPage() {
       <div className="rounded-2xl border-2 border-dashed border-expenzo/20 bg-expenzo/5 p-6 sm:p-8 text-center">
         <p className="text-lg font-semibold mb-2">Start tracking expenses</p>
         <p className="text-muted-foreground text-sm mb-4">
-          Type something like &ldquo;Paid 200 for lunch at office&rdquo; in the QuickAdd bar
+          Tap the big <strong>+ button</strong> in the menu to describe your expense!
         </p>
         <div className="inline-flex items-center gap-2 rounded-full bg-expenzo/10 px-4 py-1.5 text-sm text-expenzo font-medium">
           <span className="relative flex h-2 w-2">

@@ -1,28 +1,26 @@
-// AI expense parsing endpoint
-// Will integrate with Anthropic Haiku or Gemini Flash
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { parseExpenseWithGemini } from '@/lib/ai/parser';
 
-export async function POST(req: NextRequest) {
-  const { text } = await req.json();
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { input } = body;
 
-  if (!text?.trim()) {
-    return NextResponse.json({ error: 'No text provided' }, { status: 400 });
+    if (!input || typeof input !== 'string') {
+      return NextResponse.json(
+        { error: 'Valid input string is required' },
+        { status: 400 }
+      );
+    }
+
+    const parsedData = await parseExpenseWithGemini(input);
+
+    return NextResponse.json({ success: true, data: parsedData });
+  } catch (error) {
+    console.error('Parse Expense API Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to process expense' },
+      { status: 500 }
+    );
   }
-
-  // TODO: Add Clerk auth check
-  // TODO: Integrate AI model (Anthropic Haiku / Gemini Flash)
-
-  return NextResponse.json({
-    success: true,
-    data: {
-      amount: 0,
-      description: text,
-      category: 'Other',
-      date: new Date().toISOString().split('T')[0],
-      paymentMethod: 'Cash',
-      splitWith: [],
-      splitType: 'none',
-      confidence: 0,
-    },
-  });
 }

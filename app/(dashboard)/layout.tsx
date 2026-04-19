@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/(auth)/actions";
+import BottomNav from "@/components/layout/BottomNav";
+import AddExpenseSheet from "@/components/layout/AddExpenseSheet";
 
 export default async function DashboardLayout({
   children,
@@ -17,7 +19,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background pb-16">
       {/* Top header */}
       <header className="sticky top-0 z-40 border-b border-border/40 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -54,32 +56,13 @@ export default async function DashboardLayout({
         </div>
       </header>
 
-      {/* Page content */}
-      <main className="flex-1 mx-auto w-full max-w-6xl px-4 sm:px-6 py-6">
+      {/* Main Content */}
+      <main className="flex-1 mx-auto w-full max-w-2xl px-4 sm:px-6 py-6 pb-8 relative">
         {children}
+        <AddExpenseSheet />
       </main>
 
-      {/* Bottom nav placeholder */}
-      <nav className="sticky bottom-0 border-t border-border/40 bg-background/90 backdrop-blur-xl sm:hidden">
-        <div className="flex items-center justify-around h-14 text-xs text-muted-foreground">
-          <a href="/dashboard" className="flex flex-col items-center gap-1 text-expenzo">
-            <span className="text-lg">📊</span>
-            <span>Dashboard</span>
-          </a>
-          <a href="/expenses" className="flex flex-col items-center gap-1">
-            <span className="text-lg">💸</span>
-            <span>Expenses</span>
-          </a>
-          <a href="/groups" className="flex flex-col items-center gap-1">
-            <span className="text-lg">👥</span>
-            <span>Groups</span>
-          </a>
-          <a href="/settings" className="flex flex-col items-center gap-1">
-            <span className="text-lg">⚙️</span>
-            <span>Settings</span>
-          </a>
-        </div>
-      </nav>
+      <BottomNav />
     </div>
   );
 }
