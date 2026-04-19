@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expenzo
+
+> AI-first expense tracker | Next.js 14 + PWA + Free-tier stack
+
+Expenzo lets users add expenses in plain natural language — no forms, no friction. The AI parses your input into a structured expense.
+
+```
+"Paid 850 for pizza with Amit and Rohan on gpay yesterday"
+```
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | Next.js 14 (App Router) |
+| Styling | Tailwind CSS + shadcn/ui |
+| State | Zustand |
+| Animations | Framer Motion |
+| Charts | Recharts |
+| Forms | React Hook Form + Zod |
+| AI | Anthropic Haiku / Gemini Flash |
+| Auth | Clerk |
+| Database | Supabase (Postgres) |
+| ORM | Drizzle ORM |
+| Hosting | Vercel |
+| PWA | next-pwa |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or pnpm
+
+### Setup
 
 ```bash
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env.local
+# Fill in your keys in .env.local
+
+# Run dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See `.env.example` for required variables:
+- **Clerk** — Auth (free tier: 10,000 MAU)
+- **Supabase** — Database (free tier: 500MB)
+- **Anthropic / Gemini** — AI parsing
+- **App URL** — For local dev
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+expenzo/
+├── app/
+│   ├── (auth)/login/          # Auth pages
+│   ├── (dashboard)/           # Main app pages
+│   │   ├── expenses/[id]/     # Expense detail
+│   │   ├── groups/            # Groups list + detail
+│   │   └── settings/          # User settings
+│   └── api/                   # API routes
+│       ├── parse-expense/     # AI parsing endpoint
+│       ├── expenses/          # CRUD
+│       └── groups/            # CRUD
+├── components/
+│   ├── ui/                    # shadcn/ui
+│   ├── layout/                # BottomNav, QuickAddBar
+│   ├── expenses/              # ExpenseCard, Feed, etc.
+│   ├── dashboard/             # Charts, Summary cards
+│   └── groups/                # GroupCard, BalanceTable
+├── lib/
+│   ├── ai/                    # AI parser
+│   ├── db/                    # Drizzle schema + client
+│   ├── stores/                # Zustand stores
+│   └── utils/                 # Currency, date helpers
+├── hooks/                     # Custom React hooks
+├── types/                     # TypeScript types
+└── public/                    # PWA manifest + icons
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development Roadmap
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Phase 1** — Core: Auth, QuickAdd, AI parsing, expense feed
+- **Phase 2** — Groups: Create groups, split expenses, balances
+- **Phase 3** — Analytics: Charts, filters, trends
+- **Phase 4** — Polish: PWA, animations, offline support
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[Apache-2.0](LICENSE)
