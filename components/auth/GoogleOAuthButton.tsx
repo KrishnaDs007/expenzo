@@ -1,15 +1,26 @@
+"use client";
+
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 export default function GoogleOAuthButton() {
+  const handleGoogleLogin = async () => {
+    const supabase = createClient();
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  };
+
   return (
     <>
       <Button
         variant="outline"
         className="w-full h-12 text-sm font-medium rounded-xl border-border/80 hover:bg-muted/50 transition-all"
-        onClick={() => {
-          // TODO: Clerk Google OAuth
-        }}
+        onClick={handleGoogleLogin}
       >
         <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
           <path

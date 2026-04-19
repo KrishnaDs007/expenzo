@@ -1,15 +1,8 @@
-// Clerk auth middleware
-// Uncomment and replace when Clerk is configured
-// import { clerkMiddleware } from '@clerk/nextjs/server';
-// export default clerkMiddleware();
+import { type NextRequest } from 'next/server';
+import { updateSession } from '@/lib/supabase/middleware';
 
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-
-export function middleware(request: NextRequest) {
-  // Pass through all requests for now
-  // This will be replaced with Clerk middleware once auth is configured
-  return NextResponse.next();
+export async function middleware(request: NextRequest) {
+  return await updateSession(request);
 }
 
 export const config = {

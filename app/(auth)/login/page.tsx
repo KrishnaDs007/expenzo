@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import AuthBrandingPanel from "@/components/auth/AuthBrandingPanel";
 import GoogleOAuthButton from "@/components/auth/GoogleOAuthButton";
 import AuthForm from "@/components/auth/AuthForm";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
+  const searchParams = useSearchParams();
+  const authError = searchParams.get("error");
 
   return (
     <div className="flex min-h-screen">
@@ -33,6 +36,12 @@ export default function LoginPage() {
                 : "Start tracking expenses with AI in seconds"}
             </p>
           </div>
+
+          {authError && (
+            <p className="text-sm text-destructive bg-destructive/10 rounded-lg px-3 py-2">
+              Authentication failed. Please try again.
+            </p>
+          )}
 
           <GoogleOAuthButton />
 
